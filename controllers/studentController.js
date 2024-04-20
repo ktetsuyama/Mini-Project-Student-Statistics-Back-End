@@ -25,7 +25,7 @@ const grade = async (studentId) =>
 	Student.aggregate([
 		// TODO: Ensure we include only the student who can match the given ObjectId using the $match operator
 		{
-			$match: { ObjectId: { $gte: 0 } },
+			$match: { studentId: ObjectId },
 		},
 		{
 			$unwind: "$assignments",
@@ -33,8 +33,8 @@ const grade = async (studentId) =>
 		// TODO: Group information for the student with the given ObjectId alongside an overall grade calculated using the $avg operator
 		{
 			$group: {
-				_id: null,
-				avg_grade: { $avg: "$price" },
+				_id: studentId,
+				avg_score: { $avg: "$assignments.score" },
 			},
 		},
 	]);
